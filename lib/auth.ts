@@ -2,6 +2,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import jwt from "jsonwebtoken";
 import prisma from "./prisma";
 
+export const validateToken = (token: string) => jwt.verify(token, "secrethash");
+
 export const validateRoute = (handler) => {
   return async (req: NextApiRequest, res: NextApiResponse) => {
     const token = req.cookies.TRAX_ACCESS_TOKEN;
@@ -10,7 +12,7 @@ export const validateRoute = (handler) => {
       let user;
 
       try {
-        const { id } = jwt.verify(token, "secrethash");
+        const { id } = validateToken(token);
         user = await prisma.user.findUnique({ where: { id } });
         if (!user) throw new Error("User does not exist");
       } catch (error) {
