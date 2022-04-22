@@ -4,7 +4,6 @@ import { Artist } from "@prisma/client";
 import GradientLayout from "../components/GradientLayout";
 import { useMe } from "../lib/hooks";
 import prisma from "../lib/prisma";
-import { getColor } from "../utils/helpers";
 
 interface Props {
   artists: Artist[];
@@ -13,11 +12,9 @@ interface Props {
 const Home = ({ artists }: Props) => {
   const { user } = useMe();
 
-  const color = getColor();
-
   return (
     <GradientLayout
-      color={color}
+      color="blue"
       subtitle="profile"
       title={`${user?.firstName} ${user?.lastName}`}
       description={`${user?.playlistsCount || 0} public playlists`}

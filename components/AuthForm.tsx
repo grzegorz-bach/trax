@@ -9,7 +9,7 @@ type Props = {
 };
 
 const AuthForm: React.FC<Props> = ({ mode }) => {
-  const [email, setEmail] = useState<string>("");
+  const [email, setEmail] = useState<string>("user@test.com");
   const [password, setPassword] = useState<string>("");
   const [isLoading, setLoading] = useState<boolean>(false);
   const router = useRouter();
@@ -39,10 +39,12 @@ const AuthForm: React.FC<Props> = ({ mode }) => {
             <Input
               type="email"
               placeholder="email"
+              value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
             <Input
               type="password"
+              value={password}
               placeholder="pasword"
               onChange={(e) => setPassword(e.target.value)}
             />

@@ -4,6 +4,7 @@ import { Song } from "@prisma/client";
 import React from "react";
 import { BsFillPlayFill } from "react-icons/bs";
 import { AiOutlineClockCircle } from "react-icons/ai";
+import { useStoreActions, useStoreState } from "easy-peasy";
 import { formatDate, formatTime } from "../lib/formatters";
 
 type Props = {
@@ -11,6 +12,19 @@ type Props = {
 };
 
 const SongTable = ({ songs }: Props) => {
+  const activeSong = useStoreState((state: any) => state.activeSong);
+  const playSongs = useStoreActions(
+    (actions: any) => actions.changeActiveSongs
+  );
+  const setActiveSong = useStoreActions(
+    (actions: any) => actions.changeActiveSong
+  );
+
+  const handlePlay = (song?: Song) => {
+    setActiveSong(song || songs[0]);
+    playSongs(songs);
+  };
+
   return (
     <Box bg="transparent" color="white">
       <Box padding="20px">
@@ -21,6 +35,7 @@ const SongTable = ({ songs }: Props) => {
             colorScheme="green"
             size="lg"
             isRound
+            onClick={() => handlePlay()}
           />
         </Box>
         <Table variant="unstyled">
@@ -45,6 +60,12 @@ const SongTable = ({ songs }: Props) => {
                 }}
                 key={song.id}
                 cursor="pointer"
+                onClick={() => handlePlay(song)}
+                bg={
+                  song.id === activeSong?.id
+                    ? "rgba(255,255,255, 0.1)"
+                    : "transparent"
+                }
               >
                 <Td>{i + 1}</Td>
                 <Td>{song.name}</Td>
