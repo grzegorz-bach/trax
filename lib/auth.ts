@@ -11,7 +11,7 @@ export const validateRoute = (handler) => {
 
       try {
         const { id } = jwt.verify(token, "secrethash");
-        user = prisma.user.findUnique({ where: { id } });
+        user = await prisma.user.findUnique({ where: { id } });
         if (!user) throw new Error("User does not exist");
       } catch (error) {
         res.status(401).json({ error: "Not Authorized" });
